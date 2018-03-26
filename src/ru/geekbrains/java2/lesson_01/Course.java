@@ -8,10 +8,10 @@ public class Course {
     }
 
     public void doIt(Team team){
-        for (Animal a: team.getAnimals()) {
+        for (Competitor c: team.getCompetitors()) {
             for (Obstacle o: obstacles) {
-                o.doIt(a);
-                if (!a.isOnDistance())
+                o.doIt(c);
+                if (!c.isOnDistance())
                     break;
             }
         }
