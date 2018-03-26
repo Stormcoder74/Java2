@@ -4,7 +4,7 @@ public class Course {
     private Obstacle[] obstacles;
 
     public Course() {
-        obstacles = new Obstacle[]{new Cross(), new Wall(), new Swim()};
+        obstacles = new Obstacle[]{new Cross(150), new Wall(5), new Swim(20)};
     }
 
     public void doIt(Team team){
