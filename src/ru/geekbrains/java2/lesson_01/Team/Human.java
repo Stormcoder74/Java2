@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Team;
 
 public class Human extends Animal implements Intellect {
     public Human(String name) {

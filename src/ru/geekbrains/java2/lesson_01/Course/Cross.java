@@ -1,7 +1,9 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Course;
+
+import ru.geekbrains.java2.lesson_01.Team.*;
 
 public class Cross extends Obstacle {
-    protected int runDistance;
+    private int runDistance;
 
     public Cross(int runDistance) {
         this.runDistance = runDistance;

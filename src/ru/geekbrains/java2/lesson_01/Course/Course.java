@@ -1,4 +1,6 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Course;
+
+import ru.geekbrains.java2.lesson_01.Team.*;
 
 public class Course {
     private Obstacle[] obstacles;

@@ -1,7 +1,9 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Course;
+
+import ru.geekbrains.java2.lesson_01.Team.*;
 
 public class Wall extends Obstacle {
-    protected int jumpHeight;
+    private int jumpHeight;
 
     public Wall(int jumpHeight) {
         this.jumpHeight = jumpHeight;

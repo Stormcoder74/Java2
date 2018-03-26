@@ -1,7 +1,9 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Course;
+
+import ru.geekbrains.java2.lesson_01.Team.*;
 
 public class Swim extends Obstacle {
-    protected int swimDistance;
+    private int swimDistance;
 
     public Swim(int swimDistance) {
         this.swimDistance = swimDistance;

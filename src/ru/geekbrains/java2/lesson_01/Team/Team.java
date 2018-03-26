@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Team;
 
 public class Team {
     private Competitor[] competitors;
@@ -10,8 +10,8 @@ public class Team {
 
     public void showResults(){
         System.out.println("=========================================");
-        for (Competitor a: competitors) {
-            a.info();
+        for (Competitor c: competitors) {
+            c.info();
         }
     }
 
