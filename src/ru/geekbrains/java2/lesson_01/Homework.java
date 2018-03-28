@@ -1,22 +1,16 @@
+// https://github.com/Stormcoder74/Java2.git
 package ru.geekbrains.java2.lesson_01;
 
+import ru.geekbrains.java2.lesson_01.Course.*;
+import ru.geekbrains.java2.lesson_01.Team.*;
+
 public class Homework {
-
     public static void main(String[] args) {
-        Animal[] animals = {new Cat("Барсик"), new Dog("Шарик"),
-                new Dolphin("Афалина"), new Human("Вася")};
-        Obstacle[] obstacles = {new Cross(), new Wall(), new Swim()};
+        Course c = new Course(new Cross(150), new Wall(5), new Swim(20));
+        Team team = new Team(new Cat("Барсик"), new Dog("Шарик"),
+                new Dolphin("Афалина"), new Human("Вася"));
 
-        for (Animal a: animals) {
-            for (Obstacle o: obstacles) {
-                o.doIt(a);
-                if (!a.isOnDistance())
-                    break;
-            }
-        }
-        System.out.println("=========================================\n");
-        for (Animal a: animals) {
-            a.info();
-        }
+        c.doIt(team);
+        team.showResults();
     }
 }

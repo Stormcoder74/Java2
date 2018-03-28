@@ -1,6 +1,6 @@
-package ru.geekbrains.java2.lesson_01;
+package ru.geekbrains.java2.lesson_01.Team;
 
-public class Animal implements Competitor {
+public abstract class Animal implements Competitor {
     private String type;
     private String name;
     private int maxRunDistance;
