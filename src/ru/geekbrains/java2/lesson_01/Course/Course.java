@@ -5,8 +5,8 @@ import ru.geekbrains.java2.lesson_01.Team.*;
 public class Course {
     private Obstacle[] obstacles;
 
-    public Course() {
-        obstacles = new Obstacle[]{new Cross(150), new Wall(5), new Swim(20)};
+    public Course(Obstacle... o) {
+        obstacles = o;
     }
 
     public void doIt(Team team){
