@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.lesson_03;
+package ru.geekbrains.java2.lesson_03.Classwork;
 // video 2:10
 import java.util.ArrayList;
 import java.util.HashMap;

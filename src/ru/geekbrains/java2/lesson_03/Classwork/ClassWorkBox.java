@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.lesson_03;
+package ru.geekbrains.java2.lesson_03.Classwork;
 
 import java.util.Arrays;
 import java.util.TreeSet;
