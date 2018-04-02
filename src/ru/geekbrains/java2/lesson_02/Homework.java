@@ -13,7 +13,8 @@ public class Homework {
                     {"1", "0", "3", "9"}});
             System.out.println("testResult = " + testResult);
         } catch (MyArraySizeException | MyArrayDataException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            //e.printStackTrace();
         }
 
         try {
@@ -24,7 +25,8 @@ public class Homework {
                     {"1", "0"}});
             System.out.println("testResult = " + testResult);
         } catch (MyArraySizeException | MyArrayDataException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            //e.printStackTrace();
         }
 
         try {
@@ -35,7 +37,8 @@ public class Homework {
                     {"1", "0", "3", "9"}});
             System.out.println("testResult = " + testResult);
         } catch (MyArraySizeException | MyArrayDataException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
@@ -44,7 +47,7 @@ public class Homework {
         if (arr.length != SIZE) throw new MyArraySizeException(SIZE, SIZE);
         else for (int i = 0; i < SIZE; i++) {
             if (arr[i].length != SIZE) throw new MyArraySizeException(SIZE, SIZE);
-            else for (int j = 0; j < SIZE; j++) {
+            for (int j = 0; j < SIZE; j++) {
                 try {
                     result += Integer.parseInt(arr[i][j]);
                 } catch (NumberFormatException e) {
