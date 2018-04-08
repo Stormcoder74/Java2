@@ -31,12 +31,8 @@ public class Homework {
 
         HashMap<String, Integer> hMap = new HashMap<>();
 
-        Iterator<String> iterS = stringSet.iterator();
-        while (iterS.hasNext())
-            hMap.put(iterS.next(), 0);
-
         for (String s : words)
-            hMap.replace(s, hMap.get(s) + 1);
+            hMap.put(s, hMap.getOrDefault(s, 0) + 1);
 
         Iterator<Map.Entry<String, Integer>> iterM = hMap.entrySet().iterator();
         while (iterM.hasNext()){
