@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.lesson_05;
+package ru.geekbrains.java2.lesson_05.Classwork;
 
 public class Example_SB_1 {
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public class Example_SB_1 {
         for (int i = 0; i < 10; i++) {
             System.out.println(i);
             try {
-                Thread.sleep(100);
+                Thread.sleep(101);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -26,7 +26,7 @@ public class Example_SB_1 {
         for (int i = 0; i < 10; i++) {
             System.out.println(i);
             try {
-                Thread.sleep(100);
+                Thread.sleep(102);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
