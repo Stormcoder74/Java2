@@ -3,7 +3,7 @@ package ru.geekbrains.java2.lesson_05;
 import java.util.Arrays;
 
 public class Homework {
-    static final int size = 10000000;
+    private static final int size = 10000000;
 
     public static void main(String[] args) {
         long startTime;
