@@ -3,12 +3,12 @@ package ru.geekbrains.java2.lesson_05;
 import java.util.Arrays;
 
 public class Homework {
-    private static final int size = 10000000;
+    private static final int SIZE = 10000000;
 
     public static void main(String[] args) {
         long startTime;
 
-        float[] arr = new float[size];
+        float[] arr = new float[SIZE];
         Arrays.fill(arr, 1f);
 
         startTime = System.currentTimeMillis();

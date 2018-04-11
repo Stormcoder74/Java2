@@ -7,8 +7,8 @@ public class TwothreadedCalculate {
         int half = arr.length / 2;
         float[] arr1 = Arrays.copyOfRange(arr, 0, half);
         float[] arr2 = Arrays.copyOfRange(arr, half, arr.length);
-        Thread th1 = new Thread(new ThreadOfCalculation(arr1));
-        Thread th2 = new Thread(new ThreadOfCalculation(arr2));
+        Thread th1 = new Thread(new ThreadOfCalculation(arr1, 0));
+        Thread th2 = new Thread(new ThreadOfCalculation(arr2, half));
         th1.start();
         th2.start();
         try {
