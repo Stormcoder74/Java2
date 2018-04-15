@@ -3,11 +3,11 @@ package ru.geekbrains.java2.lesson_06.Classwork.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ServerMain {
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(8189)) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(8189);
             System.out.println("Server started...");
             Socket socket = serverSocket.accept();
             System.out.println("Client connected.");
