@@ -119,6 +119,7 @@ public class Controller implements Initializable {
         }
     }
 
+    // как-то не задействовали мы это оповещение
     public void showAlert(String message){
         Platform.runLater(new Runnable() {
             @Override
