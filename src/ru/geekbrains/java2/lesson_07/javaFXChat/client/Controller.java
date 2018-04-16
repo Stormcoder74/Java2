@@ -85,6 +85,7 @@ public class Controller implements Initializable {
                             textArea.appendText("успешная авторизация\n");
                             break;
                         }
+                        textArea.appendText(s + "\n");
                     }
                     while (true) {
                         String s = in.readUTF();
@@ -93,6 +94,7 @@ public class Controller implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
+                    setAutorized(false);
                     try {
                         socket.close();
                     } catch (IOException e) {
