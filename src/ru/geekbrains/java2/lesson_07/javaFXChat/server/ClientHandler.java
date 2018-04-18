@@ -31,6 +31,10 @@ public class ClientHandler {
                             if (authData.length == 3)
                                 newNick = server.getAuthService().getNickByLoginAndPass(authData[1], authData[2]);
                             if (newNick != null) {
+                                if (server.isNickBusy(newNick)) {
+                                    sendMessage("данный пользователь уже авторизован");
+                                    continue;
+                                }
                                 nick = newNick;
                                 sendMessage("/authok");
                                 server.subscribe(this);
@@ -44,15 +48,14 @@ public class ClientHandler {
                         String msg = in.readUTF();
                         System.out.println(nick + ": " + msg);
 
-                        if (msg.startsWith("/w")) {
-                            int firstSpace = msg.indexOf(" ") + 1;   // почему здесь не работает \\s ?
-                            int secondSpace = msg.indexOf(" ", firstSpace);
-                            String destNick = msg.substring(firstSpace, secondSpace);
-                            String privateMsg = msg.substring(secondSpace);
-                            server.privateSender(nick, destNick, privateMsg);
+                        if (msg.startsWith("/")) {
+                            if (msg.equals("/end")) break;
+                            if (msg.startsWith("/w")) {
+                                String[] data = msg.split("\\s", 3);
+                                server.privateSender(this, data[1], data[2]);
+                            }
                             continue;
                         }
-                        if (msg.equals("/end")) break;
                         server.broadcastSender(nick + ": " + msg);
                     }
                 } catch (IOException e) {

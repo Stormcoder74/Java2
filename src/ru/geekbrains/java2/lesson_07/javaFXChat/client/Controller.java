@@ -41,12 +41,12 @@ public class Controller implements Initializable {
 
     public void setAutorized(boolean autorized) {
         this.autorized = autorized;
-        if(autorized){
+        if (autorized) {
             loginPanel.setVisible(false);
             loginPanel.setManaged(false);
             messagePanel.setVisible(true);
             messagePanel.setManaged(true);
-        }else {
+        } else {
             loginPanel.setVisible(true);
             loginPanel.setManaged(true);
             messagePanel.setVisible(false);
@@ -54,33 +54,22 @@ public class Controller implements Initializable {
         }
     }
 
-    public void authorization(){
-        try {
-            out.writeUTF("/auth " +
-                    loginField.getText() + " " +
-                    passFiead.getText());
-            loginField.clear();
-            passFiead.clear();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setAutorized(false);
+    }
+
+    public void connect() {
         try {
             socket = new Socket(SERVER_IP, SERVER_PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
-            setAutorized(false);
-
             Thread t = new Thread(() -> {
                 try {
                     while (true) {
                         String s = in.readUTF();
-                        if(s.equals("/authok")){
+                        if (s.equals("/authok")) {
                             setAutorized(true);
                             textArea.appendText("успешная авторизация\n");
                             break;
@@ -92,7 +81,7 @@ public class Controller implements Initializable {
                         textArea.appendText(s + "\n");
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    showAlert("Соединение с сервером разорвано.");
                 } finally {
                     setAutorized(false);
                     try {
@@ -105,7 +94,24 @@ public class Controller implements Initializable {
             t.setDaemon(true);
             t.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert("Не удалось подключиться к серверу. Проверьте сетевое соединение.");
+        }
+    }
+
+    public void authorization() {
+        if (!loginField.getText().isEmpty() && !passFiead.getText().isEmpty()) {
+            if (socket == null || socket.isClosed()) connect();
+            try {
+                out.writeUTF("/auth " +
+                        loginField.getText() + " " +
+                        passFiead.getText());
+                loginField.clear();
+                passFiead.clear();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            showAlert("Неполные данные для авторизации!");
         }
     }
 
@@ -120,7 +126,7 @@ public class Controller implements Initializable {
     }
 
     // как-то не задействовали мы это оповещение
-    public void showAlert(String message){
+    public void showAlert(String message) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
