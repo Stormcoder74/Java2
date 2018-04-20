@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ClientHandler {
+    private static final long TIMEOUT = 120_000;
     private DataInputStream in;
     private DataOutputStream out;
     private String nick;
@@ -36,7 +37,7 @@ public class ClientHandler {
                                     continue;
                                 }
                                 nick = newNick;
-                                sendMessage("/authok");
+                                sendMessage("/authok " + nick);
                                 server.subscribe(this);
                                 break;
                             } else {
@@ -67,6 +68,29 @@ public class ClientHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
+            }).start();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(TIMEOUT);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(nick == null){
+                    try {
+                        sendMessage("/timeout");
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        socket.close();
+                        in.close();
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("timeout");
                 }
             }).start();
         } catch (IOException e) {

@@ -1,13 +1,14 @@
 package ru.geekbrains.java2.lesson_07.javaFXChat.client;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -29,18 +30,19 @@ public class Controller implements Initializable {
     TextField loginField;
     @FXML
     PasswordField passFiead;
+    @FXML
+    ListView clientsListArea;
+    private ObservableList<String> clientsObsvList;
 
     private Socket socket;
     private DataOutputStream out;
     private DataInputStream in;
+    private String myNick;
 
     final String SERVER_IP = "localhost";
     final int SERVER_PORT = 8189;
 
-    private boolean autorized;
-
     public void setAutorized(boolean autorized) {
-        this.autorized = autorized;
         if (autorized) {
             loginPanel.setVisible(false);
             loginPanel.setManaged(false);
@@ -51,12 +53,36 @@ public class Controller implements Initializable {
             loginPanel.setManaged(true);
             messagePanel.setVisible(false);
             messagePanel.setManaged(false);
+            myNick = "";
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setAutorized(false);
+        clientsObsvList = FXCollections.observableArrayList();
+        clientsListArea.setItems(clientsObsvList);
+        clientsListArea.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                return new ListCell<String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!empty) {
+                            setText(item);
+                            if (item.equals(myNick)) {
+                                setStyle("-fx-font-weight: bold;" +
+                                        " -fx-background-color: #ffead4");
+                            }
+                        } else {
+                            setGraphic(null);
+                            setText(null);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     public void connect() {
@@ -69,16 +95,31 @@ public class Controller implements Initializable {
                 try {
                     while (true) {
                         String s = in.readUTF();
-                        if (s.equals("/authok")) {
-                            setAutorized(true);
-                            textArea.appendText("успешная авторизация\n");
-                            break;
+                        if (s.startsWith("/")) {
+                            if (s.startsWith("/authok")) {
+                                setAutorized(true);
+                                myNick = s.split("\\s")[1];
+                                textArea.appendText("успешная авторизация\n");
+                                break;
+                            }
+                            if (s.startsWith("/timeout")) {
+                                Platform.runLater(() -> showAlert("Соединение закрыто по таймауту"));
+                            }
+                            continue;
                         }
                         textArea.appendText(s + "\n");
                     }
                     while (true) {
-                        String s = in.readUTF();
-                        textArea.appendText(s + "\n");
+                        String msg = in.readUTF();
+                        if (msg.startsWith("/clients")) {
+                            String[] clientsString = msg.substring(9).split(" ");
+                            Platform.runLater(() -> {
+                                clientsObsvList.clear();
+                                clientsObsvList.addAll(clientsString);
+                            });
+                            continue;
+                        }
+                        textArea.appendText(msg + "\n");
                     }
                 } catch (IOException e) {
                     showAlert("Соединение с сервером разорвано.");
@@ -110,7 +151,7 @@ public class Controller implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             showAlert("Неполные данные для авторизации!");
         }
     }
@@ -125,17 +166,21 @@ public class Controller implements Initializable {
         }
     }
 
-    // как-то не задействовали мы это оповещение
     public void showAlert(String message) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Ой! Проблемка нарисавалася!");
-                alert.setHeaderText(null);
-                alert.setContentText(message);
-                alert.showAndWait();
-            }
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Ой! Проблемка нарисавалася!");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
         });
+    }
+
+    public void clientChoise(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            msgField.setText("/w " + clientsListArea.getSelectionModel().getSelectedItem() + " ");
+            msgField.requestFocus();
+            msgField.selectEnd();
+        }
     }
 }

@@ -1,5 +1,5 @@
 package ru.geekbrains.java2.lesson_07.javaFXChat.server;
-// видео 1:23
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -41,10 +41,12 @@ public class Server {
 
     public void subscribe(ClientHandler clientHandler) {
         clientList.add(clientHandler);
+        broadcastClientListSender();
     }
 
     public void unsubscribe(ClientHandler clientHandler) {
         clientList.remove(clientHandler);
+        broadcastClientListSender();
     }
 
     public boolean isNickBusy(String nick) {
@@ -65,11 +67,24 @@ public class Server {
         for (ClientHandler ch :
                 clientList) {
             if (destNnick.equals(ch.getNick())) {
-                ch.sendMessage(sender.getNick() + " private:" + message);
-                sender.sendMessage("private to " + destNnick + ":" + message);
+                ch.sendMessage(sender.getNick() + " private: " + message);
+                sender.sendMessage("private to " + destNnick + ": " + message);
                 return;
             }
         }
         sender.sendMessage("клиент с ником " + destNnick + " не найден");
+    }
+
+    private void broadcastClientListSender() {
+        StringBuilder sb = new StringBuilder("/clients ");
+        for (ClientHandler ch :
+                clientList) {
+            sb.append(ch.getNick()).append(" ");
+        }
+        String clientsListMsg = sb.toString();
+        for (ClientHandler ch :
+                clientList) {
+            ch.sendMessage(clientsListMsg);
+        }
     }
 }
