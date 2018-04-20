@@ -79,11 +79,6 @@ public class ClientHandler {
                 if(nick == null){
                     try {
                         sendMessage("/timeout");
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         socket.close();
                         in.close();
                         out.close();
